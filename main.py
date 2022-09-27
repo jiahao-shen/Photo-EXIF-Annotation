@@ -1,7 +1,7 @@
 from PIL import Image, ExifTags, ImageDraw, ImageFont
 
 
-def annotation(file_name, bg=(255, 255, 255), show=True, save=False, **kwargs):
+def annotation(file_name, bg=(255, 255, 255), show=True, save=False, font_scale=0.2, logo_scale=0.3, **kwargs):
     img = Image.open(file_name)
 
     img_w = img.width
@@ -20,7 +20,7 @@ def annotation(file_name, bg=(255, 255, 255), show=True, save=False, **kwargs):
     while True:
         font = ImageFont.truetype('Helvetica', font_size)
         _, top, _, bottom = font.getbbox('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
-        if abs(bottom - top) >= int(blank_h * 0.2):
+        if abs(bottom - top) >= int(blank_h * font_scale):
             break
         else: 
             font_size += 1
@@ -31,6 +31,7 @@ def annotation(file_name, bg=(255, 255, 255), show=True, save=False, **kwargs):
         if k in ExifTags.TAGS
     }
 
+    # 间距
     space = int(blank_h * 0.3)
 
     # Logo
@@ -39,7 +40,7 @@ def annotation(file_name, bg=(255, 255, 255), show=True, save=False, **kwargs):
     else:
         make = exif['Make']
     logo = Image.open('assets/{}.png'.format(make))
-    logo_h = int(blank_h * kwargs['logo_scale']) 
+    logo_h = int(blank_h * logo_scale) 
     logo_w = int(logo.width / logo.height * logo_h)
     logo = logo.resize((logo_w, logo_h))
 
@@ -81,7 +82,7 @@ def annotation(file_name, bg=(255, 255, 255), show=True, save=False, **kwargs):
 
     draw.line((left_w, int(img_h + 0.2 * blank_h), left_w, int(img_h + 0.8 * blank_h)), fill=(200, 200, 200), width=int(blank_w / 500))
 
-    img_new.paste(logo, (left_w - space - logo_w, img_h + int(blank_h * (1 - kwargs['logo_scale']) / 2)), mask=logo)
+    img_new.paste(logo, (left_w - space - logo_w, img_h + int(blank_h * (1 - logo_scale) / 2)), mask=logo)
 
     draw.text((space, img_h + int(blank_h * 0.4)), model, (0, 0, 0), font=font)
     
@@ -102,13 +103,8 @@ def annotation(file_name, bg=(255, 255, 255), show=True, save=False, **kwargs):
         img_new.save('output/' + file_name.split('/')[-1], quality=100, subsampling=0)
 
 if __name__ == '__main__':
-    # annotation('img/DSC04887.jpg', logo_scale=0.2, lens_model='GMaster')
+    annotation('img/DJI_0398.jpg', logo_scale=0.3, make='Nikon', model='Mavic2 Pro')
 
-    # annotation('img/DSC02889.jpg', logo_scale=0.2)
+    # annotation('img/IMG_4101.jpg')
 
-    # annotation('img/DJI_0398.jpg', logo_scale=0.4, model='Mavic2 Pro')
-
-    annotation('img/IMG_4101.jpg', logo_scale=0.3)
-
-    # annotation('img/IMG_00038.jpg', logo_scale=0.2)
 
