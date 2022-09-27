@@ -1,7 +1,7 @@
 from PIL import Image, ExifTags, ImageDraw, ImageFont
 
 
-def annotation(file_name, bg=(255, 255, 255), show=True, save=False, font_scale=0.2, logo_scale=0.3, **kwargs):
+def annotation(file_name, bg=(255, 255, 255), show=True, save=False, font_scale=0.2, logo_scale=0.2, **kwargs):
     img = Image.open(file_name)
 
     img_w = img.width
@@ -51,7 +51,7 @@ def annotation(file_name, bg=(255, 255, 255), show=True, save=False, font_scale=
         model = exif['Model']
     model = model.replace(make, '').lstrip()
     bbox = font.getbbox(str(model))
-    model_w = abs(bbox[2] - bbox[0])
+    # model_w = abs(bbox[2] - bbox[0])
 
     # 焦距
     focal = '{:d}mm'.format(int(exif['FocalLength']))
@@ -103,8 +103,6 @@ def annotation(file_name, bg=(255, 255, 255), show=True, save=False, font_scale=
         img_new.save('output/' + file_name.split('/')[-1], quality=100, subsampling=0)
 
 if __name__ == '__main__':
-    annotation('img/DJI_0398.jpg', logo_scale=0.3, make='Nikon', model='Mavic2 Pro')
-
-    # annotation('img/IMG_4101.jpg')
+    annotation('img/DSC04179.jpg')
 
 
