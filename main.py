@@ -15,7 +15,7 @@ def annotation(file_name, bg=(255, 255, 255), show=True, save=False, **kwargs):
     
     img_new.paste(img, (0, 0))
 
-        # 全局字体大小
+    # 全局字体大小
     font_size = 10
     while True:
         font = ImageFont.truetype('Helvetica', font_size)
@@ -102,10 +102,10 @@ def annotation(file_name, bg=(255, 255, 255), show=True, save=False, **kwargs):
         img_new.save('output/' + file_name.split('/')[-1], quality=100, subsampling=0)
 
 if __name__ == '__main__':
-    # annotation('img/DSC04887.jpg', logo_scale=0.2, lens_model='GMaster')
+    annotation('img/DSC04887.jpg', logo_scale=0.2, lens_model='GMaster')
 
-    # annotation('img/DSC02889.jpg', logo_scale=0.2)
+    annotation('img/DSC02889.jpg', logo_scale=0.2)
 
     annotation('img/DJI_0398.jpg', logo_scale=0.4, make='DJI', model='Mavic2 Pro', lens_model='Hasselblad')
 
-    # annotation('img/IMG_00038.jpg', logo_scale=0.2)
+    annotation('img/IMG_00038.jpg', logo_scale=0.2)
